@@ -1,0 +1,24 @@
+name: Build WhatsApp Menu Card
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-menu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: pip install -r requirements1.txt
+
+      - name: Run Menu Generator
+        run: python scripts/generate_menu.py posts artifacts
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: whatsapp-menu-cards
+          path: artifacts/
