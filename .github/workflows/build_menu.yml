@@ -18,7 +18,7 @@ jobs:
         run: python scripts/generate_menu.py posts artifacts
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: whatsapp-menu-cards
           path: artifacts/
