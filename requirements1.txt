@@ -1,0 +1,15 @@
+# Core scientific + data libraries
+numpy==1.26.4
+pandas==2.2.2
+
+# Visualization (optional for charts later)
+matplotlib==3.9.0
+
+# Testing
+pytest==8.2.1
+
+# Markdown parsing (for cheatsheets)
+markdown==3.6
+
+# Optional: Jupyter notebooks for teachers
+jupyter==1.0.0
