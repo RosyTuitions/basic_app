@@ -1,0 +1,13 @@
+# Python version: >=3.9,<4.0
+#
+# Core dependencies for basic_app
+
+# Core scientific + data libraries
+numpy==1.26.4
+pandas==2.2.2
+
+# Testing
+pytest==8.2.1
+
+# Markdown parsing (for cheatsheets)
+markdown==3.6
