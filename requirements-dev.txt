@@ -1,0 +1,10 @@
+# Development and optional dependencies
+# Includes all core requirements plus development tools
+
+-r requirements.txt
+
+# Visualization for charts and graphs
+matplotlib==3.9.0
+
+# Jupyter notebooks for interactive development and teaching
+jupyterlab==4.0.0
