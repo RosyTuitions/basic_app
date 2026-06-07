@@ -1,20 +1,39 @@
+name: Build Cheatsheets and Quizzes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  cheatsheet-build-chemistry:
+  cheatsheet-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        subject: [chemistry, biology]
     steps:
-      - run: python src/child_review_agent.py --subject chemistry
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python src/child_review_agent.py --subject ${{ matrix.subject }}
 
-  cheatsheet-build-biology:
+  quiz-agent:
+    needs: cheatsheet-build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        subject: [chemistry, biology]
     steps:
-      - run: python src/child_review_agent.py --subject biology
-
-  quiz-agent-chemistry:
-    runs-on: ubuntu-latest
-    steps:
-      - run: python src/difficulty_tagger.py --subject chemistry
-
-  quiz-agent-biology:
-    runs-on: ubuntu-latest
-    steps:
-      - run: python src/difficulty_tagger.py --subject biology
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python src/difficulty_tagger.py --subject ${{ matrix.subject }} 
