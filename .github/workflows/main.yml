@@ -1,0 +1,20 @@
+jobs:
+  cheatsheet-build-chemistry:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python src/child_review_agent.py --subject chemistry
+
+  cheatsheet-build-biology:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python src/child_review_agent.py --subject biology
+
+  quiz-agent-chemistry:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python src/difficulty_tagger.py --subject chemistry
+
+  quiz-agent-biology:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python src/difficulty_tagger.py --subject biology
