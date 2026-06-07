@@ -4,68 +4,26 @@ on:
   push:
     branches: [ "main" ]
 
-concurrency:
-  group: build-menu
-  cancel-in-progress: true
-
 jobs:
   build-menu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-
-      - name: Cache pip packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements1.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Validate inputs
-        run: |
-          set -e
-          [ -d "posts" ] || (echo "❌ posts directory not found" && exit 1)
-          [ -f "scripts/generate_menu.py" ] || (echo "❌ generate_menu.py not found" && exit 1)
-          echo "✅ All input validation passed"
+          python-version: '3.9'
 
       - name: Install Dependencies
         run: pip install -r requirements1.txt
 
       - name: Run Menu Generator
-        run: |
-          set -e
-          echo "🚀 Starting menu generation..."
-          python scripts/generate_menu.py posts artifacts
-          if [ -d "artifacts" ] && [ "$(ls -A artifacts)" ]; then
-            echo "✅ Menu generation completed successfully"
-          else
-            echo "❌ Menu generation failed or produced no output"
-            exit 1
-          fi
+        run: python scripts/generate_menu.py posts artifacts
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4.3.1
-        if: success()
+        uses: actions/upload-artifact@v4
         with:
           name: whatsapp-menu-cards
           path: artifacts/
-          retention-days: 30
-          if-no-files-found: error
-
-      - name: Job Summary
-        if: always()
-        run: |
-          if [ "${{ job.status }}" == "success" ]; then
-            echo "## ✅ Build Successful" >> $GITHUB_STEP_SUMMARY
-            echo "WhatsApp menu cards have been generated and uploaded." >> $GITHUB_STEP_SUMMARY
-          else
-            echo "## ❌ Build Failed" >> $GITHUB_STEP_SUMMARY
-            echo "Please check the logs above for details." >> $GITHUB_STEP_SUMMARY
-          fi
