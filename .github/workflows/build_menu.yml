@@ -2,28 +2,29 @@ name: Build WhatsApp Menu Card
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build-menu:
     runs-on: ubuntu-latest
+    env:
+      # --- Choose ONE of these ---
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # Opt in early to Node.js 24
+      # ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true   # Keep Node.js 20 temporarily
     steps:
-      - name: Checkout Repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.x'
 
-      - name: Install Dependencies
-        run: pip install -r requirements1.txt
+      - name: Install dependencies
+        run: npm install
 
-      - name: Run Menu Generator
-        run: python scripts/generate_menu.py posts artifacts
+      - name: Run build
+        run: npm run build
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: whatsapp-menu-cards
-          path: artifacts/
