@@ -1,0 +1,12 @@
+# Core scientific + data libraries
+numpy==1.26.4
+pandas==2.2.2
+
+# Visualization
+matplotlib==3.9.0
+
+# Testing
+pytest==8.2.1
+
+# Optional: if you want charts in notebooks
+jupyter==1.0.0
